@@ -9,7 +9,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class MessageService {
     public String mainScreen(Map<String, Object> model) {
-        model.put("message", "Hello, Adorsys!");
+        model.put("name", "Adorsys!");
 
         return "main";
     }

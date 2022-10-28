@@ -1,4 +1,19 @@
 spring:
-  mustache:
-    servlet:
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+  datasource:
+    url: jdbc:postgresql://localhost:5442/testdb
+    username: user
+    password: password
+    driverClassName: org.postgresql.Driver
+
+  sql:
+    init:
+      platform: postgres
+      
+  freemarker:
       expose-request-attributes: true

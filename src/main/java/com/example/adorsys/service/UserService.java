@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -17,6 +18,14 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+
+    public List<User> findAll (){
+        return userRepository.findAll() ;
+    }
+
+    public void save (User user){
+        userRepository.save(user) ;
+    }
 
     public String addUser(UserDto userDto, Map<String, Object> model) {
         Optional<User> userFromDb = userRepository.findByUsername(userDto.getUsername());

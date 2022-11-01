@@ -1,6 +1,5 @@
 package com.example.adorsys.controller;
 
-import com.example.adorsys.domain.Message;
 import com.example.adorsys.service.MessageService;
 import com.sun.istack.NotNull;
 import org.springframework.stereotype.Controller;

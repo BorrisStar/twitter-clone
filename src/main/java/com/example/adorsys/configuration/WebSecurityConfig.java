@@ -3,6 +3,8 @@ package com.example.adorsys.configuration;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -46,13 +48,15 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public UserDetailsService userDetailsService(){
-        UserDetails user =
-                User.withDefaultPasswordEncoder()
-                        .username("u")
-                        .password("p")
-                        .roles("USER")
-                        .build();
-                return new InMemoryUserDetailsManager(user);
+    public AuthenticationManager authenticationManager(
+            HttpSecurity http
+    ) throws Exception {
+        return http.getSharedObject(AuthenticationManagerBuilder.class)
+                .jdbcAuthentication()
+                .dataSource(dataSource)
+                .usersByUsernameQuery("select username, password, active from usr where username=?")
+                .authoritiesByUsernameQuery("select u.username, ur.roles from usr u inner join user_role ur on u.id = ur.user_id where u.username=?")
+                .and()
+                .build();
     }
 }

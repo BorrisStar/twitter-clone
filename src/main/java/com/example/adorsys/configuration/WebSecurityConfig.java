@@ -1,6 +1,5 @@
 package com.example.adorsys.configuration;
 
-import com.example.adorsys.service.UserDetailsServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

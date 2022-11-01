@@ -54,6 +54,5 @@ public class WebSecurityConfig {
                         .roles("USER")
                         .build();
                 return new InMemoryUserDetailsManager(user);
-
     }
 }

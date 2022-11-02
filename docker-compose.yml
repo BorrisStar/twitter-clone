@@ -7,14 +7,14 @@ services:
     ports:
       - "2181:2181"
     networks:
-      - sweater
+      - adorsys_twitter
 
   #  Create a service named db.
   db:
     #   Use the Docker Image postgres. This will pull the newest release.
     image: "postgres:11-alpine"
     #   Give the container the name my_postgres. You can changes to something else.
-    container_name: "sweater"
+    container_name: "adorsys_twitter"
     #   Setup the username, password, and database name. You can changes these values.
     environment:
       - POSTGRES_USER=user
@@ -29,4 +29,4 @@ services:
       - ./postgres-data:/var/lib/debug/postgresql/data
       # - .src/main/resources/db/init.sql:/docker-entrypoint-initdb.d/init.sql
 networks:
-  sweater:
+  adorsys_twitter:

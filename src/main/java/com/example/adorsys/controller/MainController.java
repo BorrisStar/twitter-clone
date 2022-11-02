@@ -28,8 +28,9 @@ public class MainController {
     @PostMapping("/")
     public String add(
             @AuthenticationPrincipal User user,
-            @RequestParam @javax.validation.constraints.NotNull String text,
-            @RequestParam @NotNull String tag, Map<String, Object> model
+            @RequestParam @NotNull String text,
+            @RequestParam @NotNull String tag,
+            Map<String, Object> model
     ) {
         return messageService.add(text, tag, user, model);
     }

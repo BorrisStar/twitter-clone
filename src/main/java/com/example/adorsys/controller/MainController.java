@@ -21,8 +21,8 @@ public class MainController {
     }
 
     @GetMapping("/")
-    public String mainScreen(@RequestParam (required = false, defaultValue = "") String tag, Model model) {
-        return messageService.mainScreen(tag, model);
+    public String mainScreen(Map<String, Object> model) {
+        return messageService.mainScreen(model);
     }
 
     @PostMapping("/")
@@ -33,5 +33,10 @@ public class MainController {
             Map<String, Object> model
     ) {
         return messageService.add(text, tag, user, model);
+    }
+
+    @PostMapping("filter")
+    public String filter(@RequestParam(required = false, defaultValue = "") String filter, Map<String, Object> model) {
+        return messageService.filter(filter, model);
     }
 }

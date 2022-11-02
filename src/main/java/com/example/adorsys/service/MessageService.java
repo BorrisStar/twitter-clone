@@ -15,14 +15,9 @@ import java.util.Map;
 public class MessageService {
     private final MessageRepository messageRepository;
 
-    public String mainScreen(String tag, Model model) {
+    public String mainScreen(Map<String, Object> model) {
         Iterable<Message> messages = messageRepository.findAll();
-        if (tag != null && !tag.isEmpty()) {
-            messages = messageRepository.findByTag(tag);
-        }
-        model.addAttribute("messages", messages);
-        model.addAttribute("filter", tag);
-
+        model.put("messages", messages);
         return "main";
     }
 
@@ -36,6 +31,20 @@ public class MessageService {
         Message messageSaved = messageRepository.save(message);
         System.out.println(messageSaved);
         findAllMessages(model);
+        return "main";
+    }
+
+    public String filter(String filter, Map<String, Object> model) {
+        Iterable<Message> messages;
+
+        if (filter != null && !filter.isEmpty()) {
+            messages = messageRepository.findByTag(filter);
+        } else {
+            messages = messageRepository.findAll();
+        }
+
+        model.put("messages", messages);
+
         return "main";
     }
 }

@@ -16,13 +16,13 @@ import java.util.Map;
 public class MessageService {
     private final MessageRepository messageRepository;
 
-    public String mainScreen(String tag, Model model) {
+    public String mainScreen(String filter, Model model) {
         Iterable<Message> messages = messageRepository.findAll();
-        if (tag != null && !tag.isEmpty()) {
-            messages = messageRepository.findByTag(tag);
+        if (filter != null && !filter.isEmpty()) {
+            messages = messageRepository.findByTag(filter);
         }
         model.addAttribute("messages", messages);
-        model.addAttribute("filter", tag);
+        model.addAttribute("filter", filter);
 
         return "main";
     }

@@ -21,15 +21,16 @@ public class MainController {
     }
 
     @GetMapping("/")
-    public String mainScreen(@RequestParam (required = false, defaultValue = "") String tag, Model model) {
-        return messageService.mainScreen(tag, model);
+    public String mainScreen(@RequestParam (required = false, defaultValue = "") String filter, Model model) {
+        return messageService.mainScreen(filter, model);
     }
 
     @PostMapping("/")
     public String add(
             @AuthenticationPrincipal User user,
             @RequestParam @NotNull String text,
-            @RequestParam @NotNull String tag, Map<String, Object> model
+            @RequestParam @NotNull String tag,
+            Map<String, Object> model
     ) {
         return messageService.add(text, tag, user, model);
     }

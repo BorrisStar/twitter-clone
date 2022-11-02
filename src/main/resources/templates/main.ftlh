@@ -16,7 +16,7 @@
 
     <div> Message list</div>
     <form method="get" action="/">
-        <input type="text" name="tag" placeholder="Tag" value="${filter}">
+        <input type="text" name="filter">
         <button type="submit">Search</button>
     </form>
     <#list messages as message>

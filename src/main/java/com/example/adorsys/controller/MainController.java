@@ -1,12 +1,14 @@
 package com.example.adorsys.controller;
 
+import com.example.adorsys.domain.User;
 import com.example.adorsys.service.MessageService;
-import com.sun.istack.NotNull;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.constraints.NotNull;
 import java.util.Map;
 
 @Controller
@@ -24,11 +26,11 @@ public class MainController {
 
     @PostMapping("/")
     public String add(
-            @RequestParam @NotNull String text,
-            @RequestParam @NotNull String tag,
-            Map<String, Object> model
+            @AuthenticationPrincipal User user,
+            @RequestParam @javax.validation.constraints.NotNull String text,
+            @RequestParam @NotNull String tag, Map<String, Object> model
     ) {
-        return messageService.add(text, tag, model);
+        return messageService.add(text, tag, user, model);
     }
     @PostMapping("filter")
     public String filter(@RequestParam(required = false, defaultValue = "") String filter, Map<String, Object> model) {

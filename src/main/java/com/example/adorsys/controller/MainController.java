@@ -21,8 +21,8 @@ public class MainController {
     }
 
     @GetMapping("/")
-    public String mainScreen(@RequestParam (required = false, defaultValue = "") String tag, Model model) {
-        return messageService.mainScreen(tag, model);
+    public String mainScreen(@RequestParam (required = false, defaultValue = "") String filter, Model model) {
+        return messageService.mainScreen(filter, model);
     }
 
     @PostMapping("/")

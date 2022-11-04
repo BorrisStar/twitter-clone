@@ -17,8 +17,6 @@ public class Message {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    //@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_reference_generator")
-    //@SequenceGenerator(name = "account_reference_generator", sequenceName = "account_reference_id_seq", allocationSize = 1)
     private Long id;
 
     private String text;
@@ -27,6 +25,8 @@ public class Message {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User author;
+
+    private String filename;
 
     public Message(String text, String tag, User user) {
         this.author = user;

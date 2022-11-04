@@ -17,3 +17,7 @@ spring:
       
   freemarker:
       expose-request-attributes: true
+
+twitter-clone:
+
+  upload-path: /Users/borisstarodubtsev/IdeaProjects/twitter-clone/upload

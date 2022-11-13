@@ -41,7 +41,7 @@ public class UserService {
         newUser.setActivationCode(UUID.randomUUID().toString());
         userRepository.save(newUser);
 
-        if (!StringUtils.hasLength(userDto.getEmail())) {
+        if (StringUtils.hasLength(userDto.getEmail())) {
             String message = String.format(
                     "Hello, %s! \n" +
                             "Welcome to Twitter-clone. Please, visit next link: http://localhost:8080/activate/%s",
@@ -54,7 +54,7 @@ public class UserService {
         return "redirect:/login";
     }
 
-    public void activateUser(String code, Model model) {
+    public String activateUser(String code, Model model) {
         Optional<User> user = userRepository.findByActivationCode(code);
 
         if (user.isEmpty()) {
@@ -65,5 +65,7 @@ public class UserService {
             userRepository.save(userActivated);
             model.addAttribute("message", "User successfully activated");
         }
+
+        return "login";
     }
 }

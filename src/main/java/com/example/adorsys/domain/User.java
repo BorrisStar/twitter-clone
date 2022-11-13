@@ -24,11 +24,16 @@ public class User implements UserDetails {
     private String password;
     private boolean active;
 
-    public User(String username, String password, boolean active, Set<Role> roles) {
+    private String email;
+    private String activationCode;
+
+    public User(String username, String password, boolean active, Set<Role> roles, String email, String activationCode) {
         this.username = username;
         this.password = password;
         this.active = active;
         this.roles = roles;
+        this.email = email;
+        this.activationCode = activationCode;
     }
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)

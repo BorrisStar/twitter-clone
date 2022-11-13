@@ -15,4 +15,9 @@ public class UserDto {
     @NotNull
     @NotBlank
     private final String password;
+
+    @NotNull
+    @NotBlank
+    private String email;
+    private String activationCode;
 }

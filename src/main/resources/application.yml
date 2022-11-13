@@ -1,4 +1,12 @@
+mail:
+  debug: true
 spring:
+  mail:
+    host: smtp.yandex.ru
+    username: bvstar@yandex.ru
+    password: Pw#1063790
+    port: 465
+    protocol: smtps
   jpa:
     database: POSTGRESQL
     show-sql: true
@@ -19,5 +27,4 @@ spring:
       expose-request-attributes: true
 
 twitter-clone:
-
   upload-path: /Users/borisstarodubtsev/IdeaProjects/twitter-clone/upload

@@ -2,11 +2,11 @@ mail:
   debug: true
 spring:
   mail:
-    host: smtp.yandex.ru
-    username: bvstar
-    password: Pw#1063790
-    port: 465
-    protocol: smtps
+    host:
+    username:
+    password:
+    port:
+    protocol:
   jpa:
     database: POSTGRESQL
     show-sql: true

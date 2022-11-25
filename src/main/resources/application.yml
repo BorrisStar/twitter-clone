@@ -3,6 +3,8 @@ mail:
 spring:
   application:
     name: twitter-clone
+  liquibase:
+    change-log: classpath:/db/changelog/changelog.xml
   mail:
     host: smtp.gmail.com
     protocol: smtp
@@ -18,8 +20,6 @@ spring:
   jpa:
     database: POSTGRESQL
     show-sql: true
-    hibernate:
-      ddl-auto: update
 
   datasource:
     url: jdbc:postgresql://localhost:5442/testdb

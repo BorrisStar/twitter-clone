@@ -1,8 +1,4 @@
-Temp E-mail
-https://temp-mail.org
+liquibase
+https://www.liquibase.org/get-started/quickstart
 
-Read Gmail messages on other email clients using POP
-https://support.google.com/mail/answer/7104828?hl=en
-
-Guide to Spring Email:
-https://www.baeldung.com/spring-email
+https://www.baeldung.com/liquibase-vs-flyway

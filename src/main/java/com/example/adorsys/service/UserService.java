@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -41,7 +42,12 @@ public class UserService {
         newUser.setActivationCode(UUID.randomUUID().toString());
         userRepository.save(newUser);
 
-        if (StringUtils.hasLength(userDto.getEmail())) {
+        sendMessage(newUser);
+        return "redirect:/login";
+    }
+
+    private void sendMessage(User newUser) {
+        if (StringUtils.hasLength(newUser.getEmail())) {
             String message = String.format(
                     "Hello, %s! \n" +
                             "Welcome to Twitter-clone. Please, visit next link: http://localhost:8080/activate/%s",
@@ -49,9 +55,8 @@ public class UserService {
                     newUser.getActivationCode()
             );
 
-            mailSender.send(userDto.getEmail(), "Activation code", message);
+            mailSender.send(newUser.getEmail(), "Activation code", message);
         }
-        return "redirect:/login";
     }
 
     public String activateUser(String code, Model model) {
@@ -67,5 +72,46 @@ public class UserService {
         }
 
         return "login";
+    }
+
+    public void saveUser(String username, Map<String, String> form, User user) {
+        user.setUsername(username);
+        Set<String> roles = Arrays.stream(Role.values()).map(Role::name).collect(Collectors.toSet());
+        user.getRoles().clear();
+        for (String key: form.keySet()) {
+            if(roles.contains(key)){
+                user.getRoles().add(Role.valueOf(key));
+            }
+        }
+        save(user);
+    }
+
+    public void updateProfile(User user, String password, String email) {
+        String userEmail = user.getEmail();
+
+        boolean isEmailChanged = isEmailChanged(email, userEmail);
+
+        if (isEmailChanged) {
+            user.setEmail(email);
+
+            if (StringUtils.hasLength(email)) {
+                user.setActivationCode(UUID.randomUUID().toString());
+            }
+        }
+
+        if (StringUtils.hasLength(password)) {
+            user.setPassword(password);
+        }
+
+        userRepository.save(user);
+
+        if (isEmailChanged) {
+            sendMessage(user);
+        }
+    }
+
+    private static boolean isEmailChanged(String email, String userEmail) {
+        return (email != null && !email.equals(userEmail)) ||
+                (userEmail != null && !userEmail.equals(email));
     }
 }

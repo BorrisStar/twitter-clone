@@ -6,7 +6,11 @@
         logicalFilePath="changelog.xml">
 
     <changeSet author="me" id="Initial bd structure">
-        <sqlFile path="twitter-clone-1.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="db_init.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet author="me" id="Add admin">
+        <sqlFile path="add_admin.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
 </databaseChangeLog>

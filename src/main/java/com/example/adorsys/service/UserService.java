@@ -45,8 +45,8 @@ public class UserService {
             String message = String.format(
                     "Hello, %s! \n" +
                             "Welcome to Twitter-clone. Please, visit next link: http://localhost:8080/activate/%s",
-                    userDto.getUsername(),
-                    userDto.getActivationCode()
+                    newUser.getUsername(),
+                    newUser.getActivationCode()
             );
 
             mailSender.send(userDto.getEmail(), "Activation code", message);

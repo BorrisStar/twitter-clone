@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.validation.Valid;
 import java.util.Map;
 
 @Controller
@@ -25,7 +24,7 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public String addUser(@Valid UserDto userDto, Map<String, Object> model) {
+    public String addUser(UserDto userDto, Map<String, Object> model) {
         return userService.addUser(userDto, model);
     }
 

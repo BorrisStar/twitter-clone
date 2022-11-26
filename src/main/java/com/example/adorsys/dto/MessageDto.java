@@ -15,6 +15,7 @@ public class MessageDto {
     String text;
 
     @NotNull
-    @Length(max = 255, message = "Message too long (more than 255)")
+    @NotBlank(message = "Please fill the tag")
+    @Length(max = 255, message = "Tag too long (more than 255)")
     String tag;
 }

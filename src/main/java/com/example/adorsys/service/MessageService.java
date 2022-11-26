@@ -51,12 +51,11 @@ public class MessageService {
     public String add(MessageDto messageDto, User user, BindingResult bindingResult, Model model, MultipartFile file) throws IOException {
 
         if (bindingResult.hasErrors()) {
-            Map<String, String> errorsMap = BindingResultErrorsUtil.getErrors(bindingResult);
+            Map<String, String> errorMap = BindingResultErrorsUtil.getErrors(bindingResult);
 
-            model.mergeAttributes(errorsMap);
+            model.addAttribute("errorMap", errorMap);
             model.addAttribute("message", messageDto);
         } else {
-
             Message message = modelMapper.map(messageDto, Message.class);
             modelMapper.validate();
 
@@ -73,6 +72,8 @@ public class MessageService {
 
                 message.setFilename(resultFilename);
             }
+            model.addAttribute("message", null);
+
             Message messageSaved = messageRepository.save(message);
             System.out.println(messageSaved);
         }

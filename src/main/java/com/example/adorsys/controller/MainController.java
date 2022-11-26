@@ -1,8 +1,6 @@
 package com.example.adorsys.controller;
 
-import com.example.adorsys.domain.Message;
 import com.example.adorsys.service.MessageService;
-import com.sun.istack.NotNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,8 +23,8 @@ public class MainController {
 
     @PostMapping("/")
     public String add(
-            @RequestParam @NotNull String text,
-            @RequestParam @NotNull String tag,
+            @RequestParam String text,
+            @RequestParam String tag,
             Map<String, Object> model
     ) {
         return messageService.add(text, tag, model);

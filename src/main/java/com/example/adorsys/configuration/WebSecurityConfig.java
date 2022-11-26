@@ -37,7 +37,7 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    PasswordEncoder getPasswordEncoder() {
+    public PasswordEncoder getPasswordEncoder() {
         return NoOpPasswordEncoder.getInstance();
     }
 

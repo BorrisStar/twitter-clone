@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.constraints.NotNull;
 import java.util.Map;
 
 @Controller
@@ -28,8 +27,8 @@ public class MainController {
     @PostMapping("/")
     public String add(
             @AuthenticationPrincipal User user,
-            @RequestParam @NotNull String text,
-            @RequestParam @NotNull String tag, Map<String, Object> model
+            @RequestParam String text,
+            @RequestParam String tag, Map<String, Object> model
     ) {
         return messageService.add(text, tag, user, model);
     }

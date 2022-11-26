@@ -20,7 +20,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig {
     private final UserDetailsServiceImpl userDetailsServiceImpl;
-    private final PasswordEncoder passwordEncoder;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -53,7 +52,7 @@ public class WebSecurityConfig {
                 .jdbcAuthentication()
                 .and()
                 .userDetailsService(userDetailsServiceImpl)
-                .passwordEncoder(passwordEncoder)
+                .passwordEncoder(getPasswordEncoder())
                 .and()
                 .build();
     }

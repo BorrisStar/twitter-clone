@@ -13,4 +13,8 @@
         <sqlFile path="add_admin.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
+    <changeSet author="me" id="Encode password">
+        <sqlFile path="encode_passwords.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
 </databaseChangeLog>

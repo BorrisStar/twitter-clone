@@ -2,29 +2,34 @@ package com.example.adorsys.service;
 
 import com.example.adorsys.domain.Message;
 import com.example.adorsys.domain.User;
+import com.example.adorsys.dto.MessageDto;
 import com.example.adorsys.repository.MessageRepository;
+import com.example.adorsys.utils.BindingResultErrorsUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 
 @Service
 @Slf4j
 public class MessageService {
     private final MessageRepository messageRepository;
+    private final ModelMapper modelMapper;
 
     @Value("${twitter-clone.upload-path}")
     private String uploadPath;
 
-    public MessageService(MessageRepository messageRepository) {
+    public MessageService(MessageRepository messageRepository, ModelMapper modelMapper) {
         this.messageRepository = messageRepository;
+        this.modelMapper = modelMapper;
     }
 
     public String mainScreen(String tag, Model model) {
@@ -38,27 +43,42 @@ public class MessageService {
         return "main";
     }
 
-    private void findAllMessages(Map<String, Object> model) {
+    private void findAllMessages(Model model) {
         Iterable<Message> messages = messageRepository.findAll();
-        model.put("messages", messages);
+        model.addAttribute("messages", messages);
     }
 
-    public String add(String text, String tag, User user, Map<String, Object> model, MultipartFile file) throws IOException {
-        Message message = new Message(text, tag, user);
-        if(!file.isEmpty() && file.getOriginalFilename()!=null && !file.getOriginalFilename().isEmpty()){
-            File uploadDir = new File(uploadPath);
-            if(!uploadDir.exists()){
-                uploadDir.mkdir();
-            }
-            String uuidFile = UUID.randomUUID().toString();
-            String resultFilename = uuidFile.concat(".").concat(file.getOriginalFilename());
-            file.transferTo(new File(uploadPath.concat("/").concat(resultFilename)));
+    public String add(MessageDto messageDto, User user, BindingResult bindingResult, Model model, MultipartFile file) throws IOException {
 
-            message.setFilename(resultFilename);
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorsMap = BindingResultErrorsUtil.getErrors(bindingResult);
+
+            model.mergeAttributes(errorsMap);
+            model.addAttribute("message", messageDto);
+        } else {
+
+            Message message = modelMapper.map(messageDto, Message.class);
+            modelMapper.validate();
+
+            message.setAuthor(user);
+
+            if (!file.isEmpty() && file.getOriginalFilename() != null && !file.getOriginalFilename().isEmpty()) {
+                File uploadDir = new File(uploadPath);
+                if (!uploadDir.exists()) {
+                    uploadDir.mkdir();
+                }
+                String uuidFile = UUID.randomUUID().toString();
+                String resultFilename = uuidFile.concat(".").concat(file.getOriginalFilename());
+                file.transferTo(new File(uploadPath.concat("/").concat(resultFilename)));
+
+                message.setFilename(resultFilename);
+            }
+            Message messageSaved = messageRepository.save(message);
+            System.out.println(messageSaved);
         }
-        Message messageSaved = messageRepository.save(message);
-        System.out.println(messageSaved);
+
         findAllMessages(model);
+
         return "main";
     }
 }

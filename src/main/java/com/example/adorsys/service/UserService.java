@@ -6,6 +6,7 @@ import com.example.adorsys.dto.UserDto;
 import com.example.adorsys.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -19,6 +20,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final MailSender mailSender;
+    private final PasswordEncoder passwordEncoder;
 
     public List<User> findAll (){
         return userRepository.findAll() ;
@@ -40,6 +42,7 @@ public class UserService {
         newUser.setActive(true);
         newUser.setRoles(Collections.singleton(Role.USER));
         newUser.setActivationCode(UUID.randomUUID().toString());
+        newUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
         userRepository.save(newUser);
 
         sendMessage(newUser);
@@ -100,7 +103,7 @@ public class UserService {
         }
 
         if (StringUtils.hasLength(password)) {
-            user.setPassword(password);
+            user.setPassword(passwordEncoder.encode(password));
         }
 
         userRepository.save(user);

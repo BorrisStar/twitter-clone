@@ -4,12 +4,14 @@ import com.example.adorsys.domain.Role;
 import com.example.adorsys.domain.User;
 import com.example.adorsys.dto.UserDto;
 import com.example.adorsys.repository.UserRepository;
+import com.example.adorsys.utils.BindingResultErrorsUtil;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -30,10 +32,23 @@ public class UserService {
         userRepository.save(user) ;
     }
 
-    public String addUser(UserDto userDto, Map<String, Object> model) {
+    public String addUser(UserDto userDto, BindingResult bindingResult, Model model) {
+
+        if (userDto.getPassword() != null && !userDto.getPassword().equals(userDto.getPassword2())) {
+            model.addAttribute("passwordError", "Passwords are different!");
+        }
+
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorMap = BindingResultErrorsUtil.getErrors(bindingResult);
+
+            model.mergeAttributes(errorMap);
+
+            return "registration";
+        }
+
         Optional<User> userFromDb = userRepository.findByUsername(userDto.getUsername());
         if (userFromDb.isPresent()) {
-            model.put("message", String.format("User %s exists!", userFromDb.get()));
+            model.addAttribute("username", String.format("User %s exists!", userFromDb.get()));
             return "registration";
         }
         User newUser = modelMapper.map(userDto, User.class);

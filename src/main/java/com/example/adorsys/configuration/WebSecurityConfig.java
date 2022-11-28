@@ -33,6 +33,8 @@ public class WebSecurityConfig {
                 .loginPage("/login")
                 .permitAll()
                 .and()
+                .rememberMe()
+                .and()
                 .logout()
                 .permitAll();
 

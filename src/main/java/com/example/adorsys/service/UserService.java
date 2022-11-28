@@ -23,26 +23,28 @@ public class UserService {
     private final ModelMapper modelMapper;
     private final MailSender mailSender;
     private final PasswordEncoder passwordEncoder;
+    private final CaptchaService captchaService;
 
-    public List<User> findAll (){
-        return userRepository.findAll() ;
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 
-    public void save (User user){
-        userRepository.save(user) ;
+    public void save(User user) {
+        userRepository.save(user);
     }
 
-    public String addUser(UserDto userDto, BindingResult bindingResult, Model model) {
+    public String addUser(String captchaResponse, UserDto userDto, BindingResult bindingResult, Model model) {
 
-        if (userDto.getPassword() != null && !userDto.getPassword().equals(userDto.getPassword2())) {
+        boolean isCaptchaSuccess = captchaService.send(captchaResponse, model);
+
+        boolean isPasswordError = isPasswordError(userDto.getPassword(), userDto.getPassword2());
+        if (isPasswordError) {
             model.addAttribute("passwordError", "Passwords are different!");
         }
 
-        if (bindingResult.hasErrors()) {
+        if (isPasswordError || bindingResult.hasErrors() || !isCaptchaSuccess) {
             Map<String, String> errorMap = BindingResultErrorsUtil.getErrors(bindingResult);
-
             model.mergeAttributes(errorMap);
-
             return "registration";
         }
 
@@ -64,6 +66,10 @@ public class UserService {
         return "redirect:/login";
     }
 
+    private static boolean isPasswordError(String userDto, String userDto1) {
+        return userDto != null && !userDto.equals(userDto1);
+    }
+
     private void sendMessage(User newUser) {
         if (StringUtils.hasLength(newUser.getEmail())) {
             String message = String.format(
@@ -81,11 +87,13 @@ public class UserService {
         Optional<User> user = userRepository.findByActivationCode(code);
 
         if (user.isEmpty()) {
+            model.addAttribute("messageType", "danger");
             model.addAttribute("message", "Activation code is not found!");
         } else {
-            User userActivated =  user.get();
+            User userActivated = user.get();
             userActivated.setActivationCode(null);
             userRepository.save(userActivated);
+            model.addAttribute("messageType", "success");
             model.addAttribute("message", "User successfully activated");
         }
 
@@ -96,8 +104,8 @@ public class UserService {
         user.setUsername(username);
         Set<String> roles = Arrays.stream(Role.values()).map(Role::name).collect(Collectors.toSet());
         user.getRoles().clear();
-        for (String key: form.keySet()) {
-            if(roles.contains(key)){
+        for (String key : form.keySet()) {
+            if (roles.contains(key)) {
                 user.getRoles().add(Role.valueOf(key));
             }
         }
@@ -129,7 +137,7 @@ public class UserService {
     }
 
     private static boolean isEmailChanged(String email, String userEmail) {
-        return (email != null && !email.equals(userEmail)) ||
-                (userEmail != null && !userEmail.equals(email));
+        return isPasswordError(email, userEmail) ||
+                isPasswordError(userEmail, email);
     }
 }

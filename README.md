@@ -7,3 +7,9 @@ https://developers.google.com/recaptcha/docs/display
 
 Verifying the user's response
 https://developers.google.com/recaptcha/docs/verify
+
+Consuming a RESTful Web Service:
+https://spring.io/guides/gs/consuming-rest/
+
+JDBC session:
+https://www.baeldung.com/spring-session-jdbc

@@ -3,6 +3,7 @@ package com.example.adorsys.controller;
 import com.example.adorsys.service.MessageService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Map;
 
@@ -15,8 +16,8 @@ public class MainController {
     }
 
     @GetMapping("/")
-    public String mainScreen(Map<String, Object> model) {
-        return messageService.mainScreen(model);
+    public String mainScreen(@RequestParam(name = "name", required = false, defaultValue = "Boris") String name, Map<String, Object> model) {
+        return messageService.mainScreen(name, model);
     }
 
 }

@@ -29,6 +29,7 @@ public class MainController {
     ) {
         return messageService.add(text, tag, model);
     }
+
     @PostMapping("filter")
     public String filter(@RequestParam(required = false, defaultValue = "") String filter, Map<String, Object> model) {
         return messageService.filter(filter, model);

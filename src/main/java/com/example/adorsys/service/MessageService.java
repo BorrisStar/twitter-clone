@@ -12,13 +12,14 @@ import java.util.Map;
 @AllArgsConstructor
 public class MessageService {
     private final MessageRepository messageRepository;
+
     public String mainScreen(Map<String, Object> model) {
         Iterable<Message> messages = messageRepository.findAll();
         model.put("messages", messages);
         return "main";
     }
 
-    public String add(String text, String tag,Map<String, Object> model) {
+    public String add(String text, String tag, Map<String, Object> model) {
         Message message = new Message(text, tag);
         Message messageSaved = messageRepository.save(message);
         Iterable<Message> messages = messageRepository.findAll();

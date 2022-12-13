@@ -2,12 +2,6 @@
 version: "3.3"
 
 services:
-  zookeeper:
-    image: wurstmeister/zookeeper
-    ports:
-      - "2181:2181"
-    networks:
-      - adorsys_twitter
 
   #  Create a service named db.
   db:

@@ -19,7 +19,6 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 @AllArgsConstructor
 public class WebSecurityConfig {
-    private final DataSource dataSource;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -27,7 +26,6 @@ public class WebSecurityConfig {
 
         http
                 .authorizeRequests()
-                    .antMatchers("/").permitAll()
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()
@@ -48,8 +46,7 @@ public class WebSecurityConfig {
     @Bean
     public UserDetailsService userDetailsService(){
         UserDetails user =
-                User.withDefaultPasswordEncoder()
-                        .username("u")
+                User.withUsername("u")
                         .password("p")
                         .roles("USER")
                         .build();

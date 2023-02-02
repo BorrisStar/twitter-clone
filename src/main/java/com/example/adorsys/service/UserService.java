@@ -17,7 +17,7 @@ import java.util.*;
 public class UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
-    private final MailSender mailSender;
+    private final MailSenderService mailSenderService;
 
     public List<User> findAll (){
         return userRepository.findAll() ;
@@ -49,7 +49,7 @@ public class UserService {
                     newUser.getActivationCode()
             );
 
-            mailSender.send(userDto.getEmail(), "Activation code", message);
+            mailSenderService.send(userDto.getEmail(), "Activation code", message);
         }
         return "redirect:/login";
     }

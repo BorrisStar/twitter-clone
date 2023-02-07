@@ -93,10 +93,7 @@ public class UserService {
 
         if (isEmailChanged) {
             user.setEmail(email);
-
-            if (StringUtils.hasLength(email)) {
-                user.setActivationCode(UUID.randomUUID().toString());
-            }
+            user.setActivationCode(UUID.randomUUID().toString());
         }
 
         if (StringUtils.hasLength(password)) {
@@ -111,7 +108,7 @@ public class UserService {
     }
 
     private static boolean isEmailChanged(String email, String userEmail) {
-        return (email != null && !email.equals(userEmail)) ||
-                (userEmail != null && !userEmail.equals(email));
+        return (email != null && !email.isEmpty() && !email.equals(userEmail)) ||
+                (userEmail != null && !userEmail.isEmpty() && !userEmail.equals(email));
     }
 }

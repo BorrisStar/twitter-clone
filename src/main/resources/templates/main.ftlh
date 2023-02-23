@@ -19,18 +19,18 @@
                 <div class="form-group">
                     <input type="text" class="form-control <#if (errorMap['textError'])??>is-invalid</#if>"
                            value="<#if message??>${message.text}</#if>" name="text" placeholder="Input message" />
-                    <#if textError??>
+                    <#if (errorMap['textError'])??>
                         <div class="invalid-feedback">
-                            ${textError}
+                            ${errorMap['textError']}
                         </div>
                     </#if>
                 </div>
                 <div class="form-group">
                     <input type="text" class="form-control"
                            value="<#if message??>${message.tag}</#if>" name="tag" placeholder="Tag">
-                    <#if tagError??>
+                    <#if (errorMap['tagError'])??>
                         <div class="invalid-feedback">
-                            ${tagError}
+                            ${errorMap['tagError']}
                         </div>
                     </#if>
                 </div>

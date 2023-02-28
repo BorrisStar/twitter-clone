@@ -24,7 +24,7 @@ public class CaptchaService {
         CaptchaResponseDto response = restTemplate.postForObject(url, Collections.emptyList(), CaptchaResponseDto.class);
 
         if (response != null && !response.isSuccess()) {
-            model.addAttribute("captchaError", "Fill captcha");
+            model.addAttribute("captchaError", "Fill captcha!");
             return false;
         }
         return true;

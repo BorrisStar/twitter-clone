@@ -23,7 +23,7 @@ public class CaptchaService {
         String url = String.format("https://www.google.com/recaptcha/api/siteverify?secret=%s&response=%s", secret, captchaResponse);
         CaptchaResponseDto response = restTemplate.postForObject(url, Collections.emptyList(), CaptchaResponseDto.class);
 
-        if (!response.isSuccess()) {
+        if (response != null && !response.isSuccess()) {
             model.addAttribute("captchaError", "Fill captcha");
             return false;
         }

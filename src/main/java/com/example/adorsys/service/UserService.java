@@ -1,5 +1,6 @@
 package com.example.adorsys.service;
 
+import com.example.adorsys.api.model.UserResponseDto;
 import com.example.adorsys.domain.Role;
 import com.example.adorsys.domain.User;
 import com.example.adorsys.dto.UserDto;
@@ -7,6 +8,10 @@ import com.example.adorsys.repository.UserRepository;
 import com.example.adorsys.utils.BindingResultErrorsUtil;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -24,12 +29,12 @@ public class UserService {
     private final MailSender mailSender;
     private final PasswordEncoder passwordEncoder;
 
-    public List<User> findAll (){
-        return userRepository.findAll() ;
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 
-    public void save (User user){
-        userRepository.save(user) ;
+    public void save(User user) {
+        userRepository.save(user);
     }
 
     public String addUser(UserDto userDto, BindingResult bindingResult, Model model) {
@@ -83,7 +88,7 @@ public class UserService {
         if (user.isEmpty()) {
             model.addAttribute("message", "Activation code is not found!");
         } else {
-            User userActivated =  user.get();
+            User userActivated = user.get();
             userActivated.setActivationCode(null);
             userRepository.save(userActivated);
             model.addAttribute("message", "User successfully activated");
@@ -96,8 +101,8 @@ public class UserService {
         user.setUsername(username);
         Set<String> roles = Arrays.stream(Role.values()).map(Role::name).collect(Collectors.toSet());
         user.getRoles().clear();
-        for (String key: form.keySet()) {
-            if(roles.contains(key)){
+        for (String key : form.keySet()) {
+            if (roles.contains(key)) {
                 user.getRoles().add(Role.valueOf(key));
             }
         }
@@ -131,5 +136,19 @@ public class UserService {
     private static boolean isEmailChanged(String email, String userEmail) {
         return (email != null && !email.equals(userEmail)) ||
                 (userEmail != null && !userEmail.equals(email));
+    }
+
+    public ResponseEntity<List<UserResponseDto>> getUsers(Boolean active, Integer amount) {
+        Page<User> page = userRepository.getPageByActive(active, PageRequest.of(0, amount));
+
+        List<UserResponseDto> users = page.getContent().stream().map(user->
+                new UserResponseDto()
+                        .id(user.getId().toString())
+                        .username(user.getUsername())
+                        .active(user.isActive())
+                        .email(user.getEmail()))
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 }

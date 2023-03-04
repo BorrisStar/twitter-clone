@@ -1,16 +1,11 @@
+Documentation for the java Generator:
+https://openapi-generator.tech/docs/generators/java/
 
-Spring Validation:
-https://www.baeldung.com/spring-boot-bean-validation
+Generate Spring Boot REST Client with Swagger
+https://www.baeldung.com/spring-boot-rest-client-swagger-codegen
 
-BCryptPasswordEncoder:
-https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/crypto/bcrypt/BCryptPasswordEncoder.html
+Spring Data JPA - Reference Documentation
+https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories.special-parameters
 
-Hashing a Password in Java:
-https://www.baeldung.com/java-password-hashing
-
-pgcrypto:
-https://www.postgresql.org/docs/current/pgcrypto.html
-
-salt for passwords:
-https://auth0.com/blog/adding-salt-to-hashing-a-better-way-to-store-passwords/
-
+Spring Data JPA @Query
+https://www.baeldung.com/spring-data-jpa-query

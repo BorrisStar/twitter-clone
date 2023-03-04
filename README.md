@@ -9,3 +9,6 @@ https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories
 
 Spring Data JPA @Query
 https://www.baeldung.com/spring-data-jpa-query
+
+Swagger Editor online
+https://editor.swagger.io

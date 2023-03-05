@@ -26,7 +26,7 @@ public class WebSecurityConfig {
         //http.csrf().disable();
 
         http.authorizeRequests()
-                .antMatchers( "/registration", "/static/**", "/activate/*").permitAll()
+                .antMatchers( "/registration", "/static/**", "/activate/*", "/apigen-getusers").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

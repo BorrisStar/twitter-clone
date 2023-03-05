@@ -18,3 +18,5 @@ https://www.baeldung.com/spring-data-jpa-query
 
 Swagger Editor online
 https://editor.swagger.io
+
+http://localhost:8080/apigen-getusers?active=true&amount=1

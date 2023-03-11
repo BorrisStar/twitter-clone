@@ -10,12 +10,15 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -61,17 +64,8 @@ public class MessageService {
 
             message.setAuthor(user);
 
-            if (!file.isEmpty() && file.getOriginalFilename() != null && !file.getOriginalFilename().isEmpty()) {
-                File uploadDir = new File(uploadPath);
-                if (!uploadDir.exists()) {
-                    uploadDir.mkdir();
-                }
-                String uuidFile = UUID.randomUUID().toString();
-                String resultFilename = uuidFile.concat(".").concat(file.getOriginalFilename());
-                file.transferTo(new File(uploadPath.concat("/").concat(resultFilename)));
+            saveFile(message, file);
 
-                message.setFilename(resultFilename);
-            }
             model.addAttribute("message", null);
 
             Message messageSaved = messageRepository.save(message);
@@ -81,5 +75,49 @@ public class MessageService {
         findAllMessages(model);
 
         return "main";
+    }
+
+    public String getUserMessages(User currentUser, User user, Model model, Message message) {
+        Set<Message> messages = user.getMessages();
+
+        model.addAttribute("messages", messages);
+        model.addAttribute("message", message);
+        model.addAttribute("isCurrentUser", currentUser.equals(user));
+
+        return "userMessages";
+    }
+
+    public String updateMessages(User currentUser, Long userId, Message message, String text, String tag, MultipartFile file) throws IOException {
+        if (message.getAuthor().equals(currentUser)) {
+            if (!StringUtils.hasLength(text)) {
+                message.setText(text);
+            }
+
+            if (!StringUtils.hasLength(tag)) {
+                message.setTag(tag);
+            }
+
+            saveFile(message, file);
+
+            messageRepository.save(message);
+        }
+
+        return "redirect:/user-messages/" + userId;
+    }
+
+    private void saveFile(Message message, MultipartFile file) throws IOException {
+        if (file != null && !Objects.requireNonNull(file.getOriginalFilename()).isEmpty()) {
+            File uploadDir = new File(uploadPath);
+
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
+            }
+
+            String uuidFile = UUID.randomUUID().toString();
+            String resultFilename = uuidFile.concat(".").concat(file.getOriginalFilename());
+            file.transferTo(new File(uploadPath.concat("/").concat(resultFilename)));
+
+            message.setFilename(resultFilename);
+        }
     }
 }

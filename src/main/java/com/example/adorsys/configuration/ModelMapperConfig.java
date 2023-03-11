@@ -20,6 +20,7 @@ public class ModelMapperConfig {
                 .addMappings(m -> m.skip(User::setId))
                 .addMappings(m -> m.skip(User::setRoles))
                 .addMappings(m -> m.skip(User::setPassword))
+                .addMappings(m -> m.skip(User::setMessages))
                 .addMappings(m -> m.skip(User::setActive));
 
         mapper.typeMap(MessageDto.class, Message.class)

@@ -1,7 +1,7 @@
 --grant usage on schema public to public;
 --grant create on schema public to public;
 
-create sequence hibernate_sequence start 1 increment 1;
+create sequence IF NOT EXISTS hibernate_sequence start 1 increment 1;
 
 create table usr
 (

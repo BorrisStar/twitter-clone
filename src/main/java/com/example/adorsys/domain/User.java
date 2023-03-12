@@ -20,6 +20,7 @@ import java.util.Set;
 @Table(name = "usr")
 public class User implements UserDetails, Serializable {
 
+    @Serial
     private static final long serialVersionUID = 4297434609835321143L;
 
     @Id

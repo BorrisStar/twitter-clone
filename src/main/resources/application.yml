@@ -32,6 +32,23 @@ spring:
     generate-ddl: false
     #generate-ddl: true
 
+  kafka:
+    consumer:
+      group-id: ${spring.application.name}
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: "*"
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+      write-empty-json-arrays: false
 
   datasource:
     url: jdbc:postgresql://localhost:5442/testdb
@@ -48,3 +65,37 @@ spring:
 
 twitter-clone:
   upload-path: /Users/borisstarodubtsev/IdeaProjects/twitter-clone/upload
+  kafka:
+      consumer:
+        groupId: "someGroupId"
+        topic: "threats"
+      producer:
+        topic: "threats"
+        createdEventType: ThreatsFound
+        source: twitter-clone
+
+blacklist:
+  threats:
+    - name: war
+      level: WARNING
+      tags:
+        - war
+        - weapon
+        - soldier
+        - tank
+        - warplane
+    - name:  politic
+      level: DANGER
+      tags:
+        - government
+        - parties
+        - trump
+        - history
+    - name: crime
+      level: CRITICAL
+      tags:
+        - cosanostra
+        - gangster
+        - mafia
+        - drugs
+

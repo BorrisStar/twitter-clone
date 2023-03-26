@@ -3,8 +3,14 @@ package com.example.adorsys.service;
 import com.example.adorsys.domain.Message;
 import com.example.adorsys.domain.User;
 import com.example.adorsys.dto.MessageDto;
+import com.example.adorsys.kafka.TagsContentCheckingProducer;
+import com.example.adorsys.kafka.event.ThreatsExistEvent;
+import com.example.adorsys.mapper.ThreatsExistEventMapper;
+import com.example.adorsys.property.ThreatLevel;
 import com.example.adorsys.repository.MessageRepository;
 import com.example.adorsys.utils.BindingResultErrorsUtil;
+import com.google.common.collect.Multimap;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,17 +29,16 @@ import java.util.UUID;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class MessageService {
+    private final TagsContentCheckingService tagsContentCheckingService;
+    private final TagsContentCheckingProducer tagsContentCheckingProducer;
     private final MessageRepository messageRepository;
     private final ModelMapper modelMapper;
+    private final ThreatsExistEventMapper threatsExistEventMapper;
 
     @Value("${twitter-clone.upload-path}")
     private String uploadPath;
-
-    public MessageService(MessageRepository messageRepository, ModelMapper modelMapper) {
-        this.messageRepository = messageRepository;
-        this.modelMapper = modelMapper;
-    }
 
     public String mainScreen(String tag, Model model) {
         Iterable<Message> messages = messageRepository.findAll();
@@ -64,6 +69,8 @@ public class MessageService {
 
             message.setAuthor(user);
 
+            publishEvent(messageDto.getTag());
+
             saveFile(message, file);
 
             model.addAttribute("message", null);
@@ -75,6 +82,18 @@ public class MessageService {
         findAllMessages(model);
 
         return "main";
+    }
+
+    private void publishEvent(String tag) {
+        Map<ThreatLevel, Set<String>> threats = checkTreats(tag);
+        if (!threats.isEmpty()){
+            ThreatsExistEvent threatsExistEvent = threatsExistEventMapper.createEvent(threats, tag);
+            tagsContentCheckingProducer.send(threatsExistEvent);
+        }
+    }
+
+    private Map<ThreatLevel, Set<String>> checkTreats(String tag){
+        return tagsContentCheckingService.checkThreats(tag);
     }
 
     public String getUserMessages(User currentUser, User user, Model model, Message message) {
@@ -96,6 +115,8 @@ public class MessageService {
             if (!StringUtils.hasLength(tag)) {
                 message.setTag(tag);
             }
+
+            publishEvent(tag);
 
             saveFile(message, file);
 
@@ -120,4 +141,5 @@ public class MessageService {
             message.setFilename(resultFilename);
         }
     }
+
 }

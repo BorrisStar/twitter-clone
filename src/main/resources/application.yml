@@ -1,0 +1,50 @@
+mail:
+  debug: true
+recaptcha:
+  secret: 6LcHNj8jAAAAAInWR8B5VFE_7LcLIxGfakcaEu3i
+spring:
+  session:
+    jdbc:
+      initialize-schema: always
+      table-name: SPRING_SESSION
+  application:
+    name: twitter-clone
+  liquibase:
+    change-log: classpath:/db/changelog/changelog.xml
+  mail:
+    host: smtp.gmail.com
+    protocol: smtp
+    username: temptwitterclone@gmail.com
+    password: chruasrycdlkqjbo
+    port: 587
+    properties:
+      mail:
+        smtp:
+           auth: true
+           starttls:
+            enable: true
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+      #ddl-auto: create
+    generate-ddl: false
+    #generate-ddl: true
+
+
+  datasource:
+    url: jdbc:postgresql://localhost:5442/testdb
+    username: user
+    password: password
+    driverClassName: org.postgresql.Driver
+
+  sql:
+    init:
+      platform: postgres
+      
+  freemarker:
+      expose-request-attributes: true
+
+twitter-clone:
+  upload-path: /Users/borisstarodubtsev/IdeaProjects/twitter-clone/upload

@@ -66,8 +66,8 @@ public class UserService {
         return "redirect:/login";
     }
 
-    private static boolean isPasswordError(String userDto, String userDto1) {
-        return userDto != null && !userDto.equals(userDto1);
+    private static boolean isPasswordError(String password, String password2) {
+        return password != null && !password.equals(password2);
     }
 
     private void sendMessage(User newUser) {

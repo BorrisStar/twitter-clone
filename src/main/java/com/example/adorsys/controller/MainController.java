@@ -3,6 +3,7 @@ package com.example.adorsys.controller;
 import com.example.adorsys.domain.Message;
 import com.example.adorsys.domain.User;
 import com.example.adorsys.dto.MessageDto;
+import com.example.adorsys.profiling.LogExecutionTime;
 import com.example.adorsys.service.MessageService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -31,13 +32,15 @@ public class MainController {
     }
 
     @PostMapping("/")
+    @LogExecutionTime(limit = 1500L)
     public String add(
             @AuthenticationPrincipal User user,
             @Valid MessageDto messageDto,
             BindingResult bindingResult,
             Model model,
             @RequestParam("file") MultipartFile file
-    ) throws IOException {
+    ) throws IOException, InterruptedException {
+        Thread.sleep(2000);  // Delay imitation
         return messageService.add(messageDto, user, bindingResult, model, file);
     }
 

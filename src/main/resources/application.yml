@@ -74,6 +74,20 @@ twitter-clone:
         createdEventType: ThreatsFound
         source: twitter-clone
 
+management:
+  endpoint:
+    loggers.enabled: true
+    prometheus.enabled: true
+    metrics.enabled: true
+  health:
+    defaults:
+      enabled: false
+  endpoints.web:
+    base-path: /actuator
+    exposure.include: health,info,prometheus,loggers
+  metrics.export.prometheus.enabled: true
+
+
 blacklist:
   threats:
     - name: war

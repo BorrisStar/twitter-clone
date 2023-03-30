@@ -2,6 +2,7 @@ package com.example.adorsys.configuration;
 
 import com.example.adorsys.service.UserDetailsServiceImpl;
 import lombok.AllArgsConstructor;
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,7 +27,7 @@ public class WebSecurityConfig {
         //http.csrf().disable();
 
         http.authorizeRequests()
-                .antMatchers( "/registration", "/static/**", "/activate/*").permitAll()
+                .antMatchers( "/registration", "/static/**", "/activate/*", "/actuator/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

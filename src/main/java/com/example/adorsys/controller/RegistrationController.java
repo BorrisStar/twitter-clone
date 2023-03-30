@@ -1,6 +1,7 @@
 package com.example.adorsys.controller;
 
 import com.example.adorsys.dto.UserDto;
+import com.example.adorsys.profiling.LogExecutionTime;
 import com.example.adorsys.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;

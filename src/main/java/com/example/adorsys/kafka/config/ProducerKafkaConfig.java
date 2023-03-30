@@ -2,6 +2,8 @@ package com.example.adorsys.kafka.config;
 
 import com.example.adorsys.kafka.TagsContentCheckingProducer;
 import com.example.adorsys.kafka.event.ThreatsExistEvent;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.logging.LoggingMeterRegistry;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,9 +16,10 @@ public class ProducerKafkaConfig {
     @Bean
     public TagsContentCheckingProducer kafkaProducer(
             KafkaTemplate<String, ThreatsExistEvent> kafkaTemplate,
-            ProducerKafkaProperties consolidationKafkaProperties
+            ProducerKafkaProperties consolidationKafkaProperties,
+            LoggingMeterRegistry meterRegistry
     ){
-        return new TagsContentCheckingProducer(consolidationKafkaProperties.topic(), kafkaTemplate);
+        return new TagsContentCheckingProducer(consolidationKafkaProperties.topic(), kafkaTemplate, meterRegistry);
     }
 
     @Bean

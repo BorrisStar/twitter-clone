@@ -19,7 +19,7 @@ public class TagsContentCheckingConsumer {
     private final TagsThreatsProcessingService tagsThreatsProcessingService;
 
     @KafkaListener(groupId = "${twitter-clone.kafka.consumer.groupId}", topics = "${twitter-clone.kafka.consumer.topic}")
-    public void processMerchantCreateEvent(ThreatsExistEvent event) {
+    public void processThreatsExistEvent(ThreatsExistEvent event) {
         log.info("Threat processing started event {}", event);
 
         Map<ThreatLevel, Set<String>> treats = event.getData().getThreats();

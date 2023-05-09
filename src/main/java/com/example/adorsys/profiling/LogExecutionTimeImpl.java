@@ -28,8 +28,8 @@ public class LogExecutionTimeImpl {
             logger.error("Error! Execution time className = {}, methodName = {}, threadId = {}, time = {} mSec too long!",
                     pjp.getSignature().getDeclaringTypeName(),
                     ((MethodSignature) pjp.getSignature()).getMethod().getName(),
-                    System.currentTimeMillis() - start,
-                    Thread.currentThread().getId());
+                    Thread.currentThread().getId(),
+                    end);
         }
         return result;
     }

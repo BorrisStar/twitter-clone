@@ -56,8 +56,8 @@ public class MessageService {
         model.addAttribute("messages", messages);
     }
 
-    public String add(MessageDto messageDto, User user, BindingResult bindingResult, Model model, MultipartFile file) throws IOException {
-
+    public String add(MessageDto messageDto, User user, BindingResult bindingResult, Model model, MultipartFile file) throws IOException, InterruptedException {
+        Thread.sleep(2000);  // Delay imitation
         if (bindingResult.hasErrors()) {
             Map<String, String> errorMap = BindingResultErrorsUtil.getErrors(bindingResult);
 

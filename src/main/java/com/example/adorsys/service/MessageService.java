@@ -9,7 +9,6 @@ import com.example.adorsys.mapper.ThreatsExistEventMapper;
 import com.example.adorsys.property.ThreatLevel;
 import com.example.adorsys.repository.MessageRepository;
 import com.example.adorsys.utils.BindingResultErrorsUtil;
-import com.google.common.collect.Multimap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -56,8 +55,8 @@ public class MessageService {
         model.addAttribute("messages", messages);
     }
 
-    public String add(MessageDto messageDto, User user, BindingResult bindingResult, Model model, MultipartFile file) throws IOException, InterruptedException {
-        Thread.sleep(2000);  // Delay imitation
+    public String add(MessageDto messageDto, User user, BindingResult bindingResult, Model model, MultipartFile file) throws IOException {
+
         if (bindingResult.hasErrors()) {
             Map<String, String> errorMap = BindingResultErrorsUtil.getErrors(bindingResult);
 

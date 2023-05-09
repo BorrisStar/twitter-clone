@@ -40,6 +40,7 @@ public class MainController {
             Model model,
             @RequestParam("file") MultipartFile file
     ) throws IOException, InterruptedException {
+        Thread.sleep(2000);  // Delay imitation
         return messageService.add(messageDto, user, bindingResult, model, file);
     }
 
